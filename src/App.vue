@@ -1,12 +1,22 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
+  <component :is="getLayout">
     <router-view/>
-  </div>
+  </component>
 </template>
+
+<script>
+  import MainLayout from '@/layouts/MainLayout'
+  export default {
+    computed: {
+      getLayout() {
+        return this.$route.meta.layout;
+      }
+    },
+    components: {
+      MainLayout
+    }
+  }
+</script>
 
 <style>
 #app {
