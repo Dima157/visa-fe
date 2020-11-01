@@ -52,23 +52,22 @@ export default {
     'user.password': 'checkPasswordsEquality',
   },
   mounted() {
-    axios.get('http://localhost:3000/countries').then((res) => {
+    axios.get(process.env.VUE_VISA_API_URL + '/countries').then((res) => {
       this.countries = res.data;
     })
   },
   methods: {
     submit() {
-      axios.post('http://localhost:3000/users', this.user)
+      axios.post(process.env.VUE_VISA_API_URL + '/users', this.user)
     },
     checkPasswordsEquality() {
-      const { password, password_confirm } = this.user;
       const repeatedPasswordEl = this.$refs.repeatedPasswordEl.$el;
-      if (password !== password_confirm) {
+      repeatedPasswordEl.setCustomValidity('');
+
+      if (this.user.password !== this.user.password_confirm) {
         repeatedPasswordEl.setCustomValidity(
             'Пароли должны совпадать',
         );
-      } else {
-        repeatedPasswordEl.setCustomValidity('');
       }
     },
   }
