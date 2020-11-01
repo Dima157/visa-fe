@@ -1,21 +1,32 @@
 <template>
   <form @submit.prevent="submit()">
-    <p>Email</p>
-    <input type="email" validation="email" v-model="user.email" required/>
-    <p>Name</p>
-    <input type="text" v-model="user.name" required/>
-    <p>Last name</p>
-    <input type="text" v-model="user.lastName" required/>
-    <p>Country</p>
-    <select name="country" id="country" required v-model="user.country">
-      <option v-for="country in countries" :value="country.code">{{ country.name }}</option>
-    </select>
-    <p>Password</p>
-    <input type="password" name="password" required v-model="user.password"/>
-    <p>Password confirm</p>
-    <input type="password" v-model="user.password_confirm" name="password_confirm" required ref="repeatedPasswordEl"/>
-
-    <button type="submit">Save</button>
+    <md-field>
+      <label>Email</label>
+      <md-input type="email" validation="email" v-model="user.email" required/>
+    </md-field>
+    <md-field>
+      <label>Name</label>
+      <md-input type="text" v-model="user.name" required/>
+    </md-field>
+    <md-field>
+      <label>Last name</label>
+      <md-input type="text" v-model="user.lastName" required/>
+    </md-field>
+    <md-field>
+      <label>Country</label>
+      <md-select name="country" id="country" required v-model="user.country">
+        <md-option v-for="country in countries" :value="country.code">{{ country.name }}</md-option>
+      </md-select>
+    </md-field>
+    <md-field>
+      <label>Password</label>
+      <md-input type="password" name="password" required v-model="user.password"/>
+    </md-field>
+    <md-field>
+      <label>Password confirm</label>
+      <md-input ref="repeatedPasswordEl" type="password" v-model="user.password_confirm" name="password_confirm" required/>
+    </md-field>
+    <md-button type="submit">Save</md-button>
   </form>
 </template>
 
@@ -51,8 +62,7 @@ export default {
     },
     checkPasswordsEquality() {
       const { password, password_confirm } = this.user;
-      const { repeatedPasswordEl } = this.$refs;
-
+      const repeatedPasswordEl = this.$refs.repeatedPasswordEl.$el;
       if (password !== password_confirm) {
         repeatedPasswordEl.setCustomValidity(
             'Пароли должны совпадать',
