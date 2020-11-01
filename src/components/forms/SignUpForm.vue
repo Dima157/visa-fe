@@ -1,33 +1,22 @@
 <template>
-  <FormulateForm @submit="submit">
+  <form @submit.prevent="submit()">
     <p>Email</p>
-    <FormulateInput type="email" validation="email" v-model="user.email"/>
+    <input type="email" validation="email" v-model="user.email" required/>
     <p>Name</p>
-    <FormulateInput type="text" v-model="user.name"/>
+    <input type="text" v-model="user.name" required/>
     <p>Last name</p>
-    <FormulateInput type="text" v-model="user.lastName"/>
+    <input type="text" v-model="user.lastName" required/>
     <p>Country</p>
-    <country-select v-model="user.country" :country="user.country" topCountry="US" />
+    <select name="country" id="country" required v-model="user.country">
+      <option v-for="country in countries" :value="country.code">{{ country.name }}</option>
+    </select>
     <p>Password</p>
-    <FormulateInput
-        type="password"
-        name="password"
-        validation="required"
-        v-model="user.password"
-    />
+    <input type="password" name="password" required v-model="user.password"/>
     <p>Password confirm</p>
-    <FormulateInput
-        type="password"
-        name="password_confirm"
-        validation="required|confirm"
-        validation-name="Password confirmation"
-    />
+    <input type="password" v-model="user.password_confirm" name="password_confirm" required ref="repeatedPasswordEl"/>
 
-    <FormulateInput
-        type="submit"
-        label="Save"
-    />
-  </FormulateForm>
+    <button type="submit">Save</button>
+  </form>
 </template>
 
 <script>
@@ -36,21 +25,42 @@ export default {
   name: "SignUpForm",
   data: () => {
     return {
+      countries: [],
       user: {
         email: null,
         name: null,
         lastName: null,
         country: null,
-        password: null
+        password: null,
+        password_confirm: null,
       }
     }
   },
+  watch: {
+    'user.password_confirm': 'checkPasswordsEquality',
+    'user.password': 'checkPasswordsEquality',
+  },
+  mounted() {
+    axios.get('http://localhost:3000/countries').then((res) => {
+      this.countries = res.data;
+    })
+  },
   methods: {
     submit() {
-      axios.post('http://localhost:3000/users', this.user).then((res) => {
-        console.log(res);
-      })
-    }
+      axios.post('http://localhost:3000/users', this.user)
+    },
+    checkPasswordsEquality() {
+      const { password, password_confirm } = this.user;
+      const { repeatedPasswordEl } = this.$refs;
+
+      if (password !== password_confirm) {
+        repeatedPasswordEl.setCustomValidity(
+            'Пароли должны совпадать',
+        );
+      } else {
+        repeatedPasswordEl.setCustomValidity('');
+      }
+    },
   }
 }
 </script>
