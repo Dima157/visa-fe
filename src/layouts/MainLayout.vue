@@ -18,7 +18,7 @@
           </md-toolbar>
 
           <md-list>
-            <md-list-item v-for="rout in routes" @click="showSidepanel = false" to="rout.link">
+            <md-list-item v-for="rout in routes" @click="showSidepanel = false" :to="rout.link">
               <span class="md-list-item-text" >{{ rout.name }}</span>
             </md-list-item>
           </md-list>
