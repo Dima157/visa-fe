@@ -1,46 +1,12 @@
 <template>
-  <div class="page-container md-layout-column">
-    <md-app>
-      <md-app-toolbar class="md-primary">
-        <span class="md-title">VisaApp</span>
-        <div class="md-toolbar-section-end">
-          <md-button @click="showSidepanel = true">
-            <md-avatar class="md-avatar-icon md-small">
-              <md-icon>home</md-icon>
-            </md-avatar>
-          </md-button>
-        </div>
-      </md-app-toolbar>
-      <md-app-drawer class="md-right" :md-active.sync="showSidepanel">
-        <md-toolbar class="md-transparent" md-elevation="0">
-          <span class="md-title">Favorites</span>
-        </md-toolbar>
-
-        <md-list>
-          <md-list-item to="/sign-up">
-            <span class="md-list-item-text" >Sign Up</span>
-          </md-list-item>
-
-          <md-list-item>
-            <span class="md-list-item-text">Login</span>
-          </md-list-item>
-        </md-list>
-      </md-app-drawer>
-      <md-app-content>
-        <component :is="getLayout">
-          <router-view/>
-        </component>
-      </md-app-content>
-    </md-app>
-  </div>
+    <component :is="getLayout">
+      <router-view/>
+    </component>
 </template>
 
 <script>
   import MainLayout from '@/layouts/MainLayout'
   export default {
-    data: () => ({
-      showSidepanel: false
-    }),
     computed: {
       getLayout() {
         return this.$route.meta.layout;
