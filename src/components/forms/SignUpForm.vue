@@ -24,14 +24,22 @@
     </md-field>
     <md-field>
       <label>Password confirm</label>
-      <md-input ref="repeatedPasswordEl" type="password" v-model="user.password_confirm" name="password_confirm" required/>
+      <md-input type="password" v-model="user.password_confirm" name="password_confirm" required/>
+      <small
+          class="helper-text invalid"
+          v-if="$v.user.password_confirm.$invalid"
+      >
+        Пароли не совпадают
+      </small>
     </md-field>
-    <md-button type="submit">Save</md-button>
+    <md-button type="submit" :disabled="$v.$invalid">Save</md-button>
   </form>
 </template>
 
 <script>
 import axios from 'axios';
+import {required, minLength, sameAs, email} from 'vuelidate/lib/validators'
+
 export default {
   name: "SignUpForm",
   data: () => {
@@ -47,33 +55,29 @@ export default {
       }
     }
   },
-  watch: {
-    'user.password_confirm': 'checkPasswordsEquality',
-    'user.password': 'checkPasswordsEquality',
+  validations: {
+    user: {
+      email: {email},
+      name: {required},
+      lastName: {required},
+      country: {required},
+      password: {required, minLength: minLength(6)},
+      password_confirm: {
+        sameAsPassword: sameAs('password')
+      }
+    }
   },
   mounted() {
-    axios.get(process.env.VUE_VISA_API_URL + '/countries').then((res) => {
+    console.log(process.env.VISA_API_URL)
+    axios.get('http://localhost:3000/countries').then((res) => {
       this.countries = res.data;
     })
   },
   methods: {
     submit() {
-      axios.post(process.env.VUE_VISA_API_URL + '/users', this.user)
-    },
-    checkPasswordsEquality() {
-      const repeatedPasswordEl = this.$refs.repeatedPasswordEl.$el;
-      repeatedPasswordEl.setCustomValidity('');
-
-      if (this.user.password !== this.user.password_confirm) {
-        repeatedPasswordEl.setCustomValidity(
-            'Пароли должны совпадать',
-        );
-      }
+      axios.post('http://localhost:3000/users', this.user)
     },
   }
 }
 </script>
 
-<style scoped>
-
-</style>
