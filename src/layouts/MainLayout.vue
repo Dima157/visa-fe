@@ -1,7 +1,7 @@
 <template>
   <div id="main-layout">
     <div class="page-container md-layout-column">
-      <md-app>
+      <md-app style="min-height: 100vh;">
         <md-app-toolbar class="md-primary">
           <router-link to="/">
             <span class="md-title">VisaApp</span>
