@@ -14,7 +14,7 @@
               <md-menu-content>
                 <md-menu-item to="/sign-up">Sign up</md-menu-item>
                 <md-menu-item to="/" @click="currentUser = null" v-if="currentUser">Logout</md-menu-item>
-                <md-menu-item to="/" @click="currentUser = {name: 'Test User'}" v-else>Login</md-menu-item>
+                <md-menu-item to="/sign-in" @click="currentUser = {name: 'Test User'}" v-else>Sing in</md-menu-item>
               </md-menu-content>
             </md-menu>
             <md-button class="md-icon-button md-dense md-primary" @click="showSidepanel = true" v-if="currentUser">
@@ -53,7 +53,7 @@ export default {
     currentUser: null,
     routes: [
       {link: '/sign-up', name: 'Sign up'},
-      {link: '/', name: 'Login'}
+      {link: '/sign-in', name: 'Sign in'}
     ]
   }),
 }
